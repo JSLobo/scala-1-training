@@ -1,6 +1,7 @@
 package co.com.scalatraining.collections
 
 import org.scalatest.FunSuite
+import sun.font.TrueTypeFont
 
 import scala.collection.immutable.Seq
 
@@ -52,7 +53,28 @@ class ListSuite extends FunSuite {
     assert(l2 == List(4,1,2,3))
   }
 
-  test("A una lista se le debe poder eliminar elementos con drop") {
+  test("Se pueden concatenar listas"){
+    val l1 = List(1,2,3)
+    val l2 = 4::l1
+    val l3 = l1:::l2
+    assert(l3 == List(1, 2, 3, 4,1,2,3))
+  }
+
+  test("Adicionar un elemento con :+") {
+    val l1 = List(1, 2)
+    val l2 = l1 :+ 3
+    assert(l2 == List(1, 2, 3))
+  }
+
+  test("Adicionar al comienzo y al final de la lista") {
+    val l1 = List(2,3,4)
+    val l2 = 1::(l1:+5)
+    assert(l2 == List(1, 2, 3,4,5))
+    val l3 = 1+:l1:+5
+    assert(l3 == List(1, 2, 3,4,5))
+  }
+
+      test("A una lista se le debe poder eliminar elementos con drop") {
     val lista = List(1, 2, 3, 4)
     val dropped =lista.drop(2)
 
@@ -108,16 +130,43 @@ class ListSuite extends FunSuite {
     }
   }
 
+  test("Uso de dropwhile") {
+    val lista = List(2, 1, 3, 4)
+
+
+    assertResult(List(1, 3, 4)) {
+      lista.dropWhile(numero=>
+      numero % 2 == 0)
+    }
+  }
+
+  test("Dropwhile"){
+    val l = List(1,2,3,4,5)
+    val r =  l.dropWhile(x => x %2!=0)
+    assert(r ==List(2,3,4,5))
+    val r2 = l.dropWhile(x => x%2 ==0)
+    assert(r2==List(1,2,3,4,5))
+  }
+
   test("Una lista se debe poder acumular") {
-    val lista = List(1, 2, 3, 4)
-    assertResult(10) {
+    val lista = List(1, 2, 3, 4, 5)
+    assertResult(15) {
       lista.fold(0) { (acumulado, item) =>
         acumulado + item
       }
     }
   }
 
-  test("Una lista se debe poder acumular en una direccion determinada (izquierda)") {
+  test("Una lista se debe poder multiplicar") {
+    val lista = List(1, 2, 3, 4, 5)
+    assertResult(120) {
+      lista.fold(1) { (multiplicado, item) =>
+        multiplicado * item
+      }
+    }
+  }
+
+  test("Una lista se debe poder acumular en una direccion determinada (izquierda a derecha)") {
     val lista = List("Andres", "Felipe", "Juan", "Carlos")
     assertResult("1.Andres,2.Felipe,3.Juan,4.Carlos,") {
       var cont = 0
@@ -128,7 +177,7 @@ class ListSuite extends FunSuite {
     }
   }
 
-  test("Una lista se debe poder acumular en una direccion determinada (derecha)") {
+  test("Una lista se debe poder acumular en una direccion determinada (derecha a izquierda)") {
     val lista = List("Andres", "Felipe", "Juan", "Carlos")
     assertResult("1.Carlos,2.Juan,3.Felipe,4.Andres,") {
       var cont = 0
@@ -150,10 +199,19 @@ class ListSuite extends FunSuite {
     }
   }
 
-  test("test - obtenga el promedio de los numeros pares") {
+    /*test("test - obtenga el promedio de los numeros pares") {
     val lista = List(1, 2, 3, 4, 6, 7, 8, 9, 10)
-    assert(true)
-  }
+    assertResult(6==lista
+      .filter(numero => numero % 2 == 0)
+      .fold(0) { (acumulado, item) =>
+        cont = cont + 1
+        promedio + acumulado + item
+    }
+        promedio/cont
+
+      }*/
+
+
 
   test("Una lista se debe poder dividir") {
     val lista = List(1, 2, 3, 4)
@@ -183,6 +241,12 @@ class ListSuite extends FunSuite {
     assert(result == None)
   }
 
+  test("Se debe poder acceder al primer elemento de List(1,2,3,4) de forma segura") {
+    val lista = List(1,2,3,4)
+    val result = lista.headOption
+    assert(result == Some(1))
+  }
+
 
   test("Una List se debe poder transformar") {
 
@@ -195,6 +259,19 @@ class ListSuite extends FunSuite {
     assert(lista2.head == "1prueba")
     assert(lista != lista2)
     assert(lista2 == lista3)
+  }
+
+  test("Una List se debe poder transformar de String a Int") {
+
+    def f(s:String):Int = s.length
+
+    val lista = List("H", "Ho", "Hol", "Hola")
+    //val lista2 = lista.map(dato => dato + "prueba")
+    val lista2 = lista.map(dato => f(dato))
+
+    //assert(lista2.head == "1prueba")
+    //assert(lista != lista2)
+    assert(lista2 == List(1,2,3,4))
   }
 
   test("Verificacion de map sobre una List"){

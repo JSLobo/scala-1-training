@@ -225,6 +225,25 @@ class SyntaxSuite extends FunSuite{
         assert(n=="NOMBRE-FIJO")
       }
     }
+
+
   }
 
+  test("verificacion de unapply con case"){
+    class Profesor(nombre:String, edad:Int)
+
+   object Profesor{
+      def unapply(arg: Profesor): Option[(String, Int)] = Some(("NOMBRE-FIJO",0))
+    }
+
+    new Profesor("JP",33) match{
+      case Profesor(n,e) => {
+        assert(n != "JP")
+        assert(n =="NOMBRE-FIJO")
+        assert(e == 0)
+      }
+    }
+
+
+  }
 }
