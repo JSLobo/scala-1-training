@@ -130,4 +130,10 @@ class MapSuite extends FunSuite {
     }
   }
 
+  test("Hilera --> Hola a todos") {
+    val hilera = "Hola a todos"
+    var hileraMap = hilera.split(" ").groupBy(identity).mapValues(_.length)
+    assert(hileraMap == Map("Hola" -> 1, "a" -> 1, "todos" -> 1))
+  }
+
 }

@@ -152,4 +152,35 @@ class SetSuite extends FunSuite {
     assert(r.tail.tail.tail.head == 3)
   }
 
+  test("Operaciones de conjuntos") {
+    val set1: Set[Int] = Set(1,2,3,4,5,6)
+    val set2: Set[Int] = Set(5,6,7,8,9,10)
+
+    //Union
+
+    val arrayUnionInicial1: Array[Int] = set1.toArray
+    val arrayUnionInicial2: Array[Int] = set2.toArray
+    var arrayUnionTemp: Array[Int] = Array()
+    arrayUnionInicial1.foreach(x => arrayUnionTemp = arrayUnionTemp :+ x)
+    arrayUnionInicial2.foreach(x => arrayUnionTemp = arrayUnionTemp :+ x)
+    arrayUnionTemp = arrayUnionTemp.distinct
+    val setUnion: Set[Int] = arrayUnionTemp.toSet
+    assert(setUnion == Set(1,2,3,4,5,6,7,8,9,10))
+    //Interseccion
+    /*val arrayInterseccionInicial1: Array[Int] = set1.toArray
+    val arrayInterseccionInicial2: Array[Int] = set2.toArray
+    var arrayInterseccionTemp: Array[Int] = Array()
+    arrayInterseccionInicial1.foreach(x => arrayInterseccionTemp = arrayInterseccionTemp :+ x)
+    arrayInterseccionInicial2.foreach(x => arrayInterseccionTemp = arrayInterseccionTemp :+ x)
+    arrayInterseccionTemp = arrayInterseccionTemp.distinct
+    val setInterseccion: Set[Int] = arrayInterseccionTemp.toSet
+    assert(setInterseccion == Set(1,2,3,4,5,6,7,8,9,10))*/
+    /*val setInterseccion =
+    //Diferencia
+    val setDiferencia =
+
+    //Complemento
+    val setComplemento =*/
+
+  }
 }
