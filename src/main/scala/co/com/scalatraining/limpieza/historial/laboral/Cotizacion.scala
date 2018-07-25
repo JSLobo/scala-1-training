@@ -1,4 +1,4 @@
-package co.com.scalatraining.limpieza.historial.laboral
+/*package co.com.scalatraining.limpieza.historial.laboral
 
 case class Cotizacion(data: Map[Int,List[String]]) {
 
@@ -21,7 +21,7 @@ case class Cotizacion(data: Map[Int,List[String]]) {
         count = count + 1
     )
 
-    data1 = 
+    //data1 =
   }
   def regla2:Map[Int,List[String]] = {
 
@@ -35,4 +35,4 @@ case class Cotizacion(data: Map[Int,List[String]]) {
   def regla5:Map[Int,List[String]] = {
 
   }
-}
+}*/

@@ -1,4 +1,4 @@
-package co.com.scalatraining.limpieza.historial.laboral
+/*package co.com.scalatraining.limpieza.historial.laboral
 
 class Historial {
       def main(args: Array[String]): Unit = {
@@ -10,4 +10,4 @@ class Historial {
         println(data.get(1))
         val procesoDeCotizacion1 = new Cotizacion(data)
     }//enter code here
-}
+}*/
