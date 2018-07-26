@@ -35,7 +35,10 @@ class TrySuite extends FunSuite with Matchers {
   test("Se debe poder hacer pattern match sobre un Try que es Failure"){
     f match {
       case Success(valor) => assert(false)
-      case Failure(e) => assert(true)
+      case Failure(e) => {
+        println(s"La excepcion generada en pattern match es ${e.getCause()}")
+        assert(true)
+      }
     }
   }
 
@@ -63,6 +66,7 @@ class TrySuite extends FunSuite with Matchers {
 
     assert(res == Try("HOLA"))
     assert(res == Success("HOLA"))
+    assert(s == Success(1))
 
 
   }
@@ -87,6 +91,44 @@ class TrySuite extends FunSuite with Matchers {
 
   }
 
+  test("Error en la recuperacion con recover Success(Exception)"){
+    val rec = f.recover{
+      case e:Exception => throw new Exception("Error propio")
+    }
+
+    assert(rec.isFailure)
+    rec match{
+      case Failure(e) => assert(e.getMessage == "Error propio")
+    }
+  }
+
+  /*test("Error en la recuperacion con recover Success(Failure)"){
+  val rec = f.recover{
+    case e:Exception => Try(throw new Exception("Error propio"))
+    }
+    assert()
+    rec match{
+      case Success(e) =>{
+        e match {
+          case ex: Exception => assert(ex.getMessage() == "Error propio")
+        }
+      }
+      case Failure(e) => assert(false)
+    }
+
+  }*/
+
+  test("Error en la recuperacion con recoverWith (Failure)"){
+    val rec = f.recoverWith{
+      case e:Exception => Try(throw new Exception("Error propio"))
+    }
+    println(s"rec vale $rec")
+    assert(rec.isFailure)
+    rec match{
+      case Failure(e) => assert(e.getMessage() == "Error propio")
+    }
+  }
+
   test("Un Failure se debe poder recuperar con recoverWith"){
 
     val res = f.map(x=>"HOLA")
@@ -94,7 +136,7 @@ class TrySuite extends FunSuite with Matchers {
       s
     }}
 
-    res.flatMap(x => Try(assert(x == 1)) )
+   assert(res == Success(1))
 
   }
 
@@ -151,6 +193,39 @@ class TrySuite extends FunSuite with Matchers {
     assert(res.isFailure)
 
   }
+
+  test("Try for-com. A chain of Tries with a Failure is a Failure with RECOVER FROM F"){
+
+    val res = for{
+      x <- s
+      y <- f.recover{case e: Exception => {
+        1
+      }}
+      z <- s
+    } yield x + y + z
+
+    assert(res.isSuccess)
+    assert(res == Success(3))
+
+  }
+
+  test("Try for-com. A chain of Tries with a Failure is a Failure with RECOVER FROM RES"){
+
+    val res = for{
+      x <- s
+      y <- f
+      z <- s
+    } yield x + y + z
+
+      var resRecuperado = res.recover{case e: Exception => {
+        3
+      }}
+
+    assert(resRecuperado.isSuccess)
+    assert(resRecuperado == Success(3))
+
+  }
+
 
 
   /*

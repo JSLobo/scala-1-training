@@ -91,6 +91,30 @@ class FutureSuite extends FunSuite {
 
   }
 
+  test("Futuro fallido"){
+    val f1 = Future {
+      Thread.sleep(200)
+      1
+    }
+
+    val f2 = Future {
+      Thread.sleep(200)
+      2/0
+    }
+
+    val f3: Future[Int] = for {
+      res1 <- f1
+      res2 <- f2.recover{case e:Exception =>0}
+      res3 <- f1
+    } yield res1 + res2
+
+    val res = Await.result(f3, 10 seconds)
+    println(s"Test failure: $res")
+    assert(res == 1)
+
+
+  }
+
   test("Se debe poder manejar el error de un Future de forma imperativa") {
     val divisionCero = Future {
       Thread.sleep(100)
@@ -108,6 +132,8 @@ class FutureSuite extends FunSuite {
 
     assert(error == true)
   }
+
+
 
   test("Se debe poder manejar el exito de un Future de forma imperativa") {
 
